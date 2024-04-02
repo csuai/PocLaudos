@@ -7,7 +7,7 @@ public class CampoLista : Campo
     public virtual List<ItemLista> Itens { get; set; } = new();
     public bool MultiplosValores { get; set; }
     [NotMapped] public Guid Valor { get; set; }
-    [NotMapped] public List<Guid> Valores { get; set; } = new();
+    [NotMapped] public List<ItemLista> Selecionados { get; set; } = new();
     public string Desc => "Lista";
 }
 public class CampoListaValidator : AbstractValidator<CampoLista>

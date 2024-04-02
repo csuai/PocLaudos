@@ -5,7 +5,7 @@ namespace PocLaudos.Model;
 public class CampoData : Campo
 {
     public string Desc => "Data";
-    [NotMapped] public DateTime Valor { get; set; }
+    [NotMapped] public DateTime? Valor { get; set; }
 }
 
 public class CampoDataValidator : AbstractValidator<CampoData>
