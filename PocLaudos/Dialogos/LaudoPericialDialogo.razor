@@ -1,0 +1,25 @@
+﻿@using MudBlazor
+<MudDialog>
+    <DialogContent>
+        @foreach (var c in Campos)
+        {
+            if (c.Titulo.Trim().Length > 0)
+            {
+                <MudText Typo="Typo.h6">@c.Titulo</MudText>
+            }
+            <MudText Typo="Typo.body1">@c.Texto</MudText>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Cancel">Fechar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter] public List<CampoTexto>Campos { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!; 
+    void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

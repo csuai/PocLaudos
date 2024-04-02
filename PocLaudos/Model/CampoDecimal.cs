@@ -4,7 +4,7 @@ namespace PocLaudos.Model;
 
 public class CampoDecimal : Campo
 {
-    [NotMapped] public double Valor { get; set; }
+    [NotMapped] public double? Valor { get; set; }
     public string Desc => "Decimal";
 }
 

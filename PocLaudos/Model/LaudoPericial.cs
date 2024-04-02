@@ -5,6 +5,7 @@ public class LaudoPericial:BaseSemNome
     public int Numero { get; set; }
     public Guid ModeloLaudoId { get; set; }
     public ModeloLaudo? ModeloLaudo { get; set; }
+    
     public LaudoPericial()
     {
         var rnd = new Random();

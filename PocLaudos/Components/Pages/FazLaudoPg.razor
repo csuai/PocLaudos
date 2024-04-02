@@ -14,6 +14,18 @@ else
                 <MudGrid>
                     @foreach (var c in ModeloSelecionado.CampoTextos)
                     {
+                        @if (ModeloSelecionado.Especie is { Fav: true })
+                        {
+                            <MudItem xs="12">
+                                <MudNumericField @bind-Value="Fav" Label="Fav" Variant="Variant.Text" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="InvolucroInicial" Label="Invólucro Inicial" Variant="Variant.Text" />
+                            </MudItem>
+                            <MudItem xs="12">
+                                <MudTextField @bind-Value="InvolucroFinal" Label="Invólucro Inicial" Variant="Variant.Text" />
+                            </MudItem>
+                        }
                         @if (c.Titulo.Trim().Length > 0)
                         {
                             <MudItem xs="12">
@@ -21,7 +33,8 @@ else
                             </MudItem>
                         }
                         <MudItem xs="12">
-                            <MudTextField T="string" Label="Multiline" Variant="Variant.Text" @bind-Text=c.Texto Lines="5" />
+                            <MudTextField T="string" Label="Multiline" Variant="Variant.Text" 
+                                          @bind-Text=c.Texto Lines="5" />
                         </MudItem>
                     }
                 </MudGrid>
