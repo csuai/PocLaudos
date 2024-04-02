@@ -1,0 +1,40 @@
+﻿@using MudBlazor
+<MudDialog>
+    <DialogContent>
+        <PocLaudos.Components.MiniComponente.CampoDecimalComponente Campo="Campo" ClassificadoresCampo="ClassificadoresCampo"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit">Salvar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter] public CampoDecimal Campo { get; set; } = null!;
+    [Parameter] public List<ClassificadorCampo> ClassificadoresCampo { get; set; } = null!;
+    public List<ClassificadorCampo> Filtrada { get; set; } = null!;
+    [Inject] public INotifica Notifica { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        //Filtrada = ClassificadoresCampo.Where(d => d.TipoClassificadorCampoId == 2).ToList();
+    }
+    void Submit()
+    {
+        var v = new CampoDecimalValidator();
+        var r = v.Validate(Campo);
+        if (!r.IsValid)
+        {
+            Notifica.Alerta(r.Errors);
+            return;
+        }
+        MudDialog.Close(DialogResult.Ok(Campo));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

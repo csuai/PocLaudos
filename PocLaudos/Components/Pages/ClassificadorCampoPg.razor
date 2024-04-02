@@ -1,0 +1,53 @@
+﻿@page "/classificador"
+<MudText Typo="Typo.h3">Classificadores de Campo</MudText>
+<MudCard>
+    <MudForm Model="@Model">
+        <MudCardContent>
+            <MudText Typo="Typo.h6">Cadastrar Classificador</MudText>
+            <MudGrid>
+                <MudItem>
+                    <MudTextField @bind-Value="Model.Nome"
+                                  For="@(() => Model.Nome)"
+                                  Immediate="true"
+                                  Label="Nome do Classificador" />
+                </MudItem>
+
+
+                <MudItem xs="6">
+                    <MudSelect T="Guid" Dense="true" Label="Tipo de Campo" @bind-Value="Model.TipoClassificadorCampoId">
+                        @foreach (var t in Tipos)
+                        {
+                            <MudSelectItem Value=@t.Id>@t.Nome </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+
+        </MudCardContent>
+    </MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Cadastrar</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@if (Carregando)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h6">Classificadores Cadastrados</MudText>
+    <MudTable Items="Lista" Hover="true" SortLabel="Ordenar" Elevation="0">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ClassificadorCampo, object>(x=>x.Nome)">Nome</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ClassificadorCampo, object>(x=>x.TipoClassificadorCampo!.Nome)">Tipo Campo</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Nome</MudTd>
+            <MudTd DataLabel="Date">@context.TipoClassificadorCampo!.Nome</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}

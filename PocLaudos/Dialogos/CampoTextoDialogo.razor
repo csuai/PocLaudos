@@ -1,0 +1,51 @@
+﻿@using MudBlazor
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="d-flex align-center pa-2 mx-2 my-2" Style="width: 500px">
+            <MudGrid>
+
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="Campo.Titulo" Label="Título" Variant="Variant.Text" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="Campo.Texto" FullWidth="true"
+                                  Label="Texto" Variant="Variant.Text" Lines="25" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled=somenteLeitura>Salvar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [Parameter] public CampoTexto Campo { get; set; } = null!;
+    [Inject] private INotifica Notifica { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+    bool somenteLeitura = false;
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        //somenteLeitura = Campo.Id > 0;
+    }
+    void Submit()
+    {
+        var v = new CampoTextoValidator();
+        var r = v.Validate(Campo);
+        if (!r.IsValid)
+        {
+            Notifica.Alerta(r.Errors);
+            return;
+        }
+        MudDialog.Close(DialogResult.Ok(Campo));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+
+}

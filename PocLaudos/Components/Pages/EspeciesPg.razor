@@ -1,0 +1,43 @@
+﻿@page "/especies"
+
+<MudText Typo="Typo.h3">Espécies</MudText>
+<MudCard>
+    <MudForm Model="@Model" @ref="@form" Validation="@(Validator.ValidateValue)" ValidationDelay="0">
+        <MudCardContent>
+            <MudText Typo="Typo.h6">Cadastrar Espécie</MudText>
+
+            <div class="d-flex align-center justify-space-between">
+                <MudTextField @bind-Value="Model.Nome"
+                              For="@(() => Model.Nome)"
+                              Immediate="true"
+                              Label="Nome da Espécie" />
+                <MudCheckBox T="bool" @bind-Value="Model.Fav" Label="Fav" />
+            </div>
+        </MudCardContent>
+    </MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Cadastrar</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@if (Carregando)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    <MudText Typo="Typo.h6">Espécies Cadastradas</MudText>
+    <MudTable Items="Lista" Hover="true" SortLabel="Ordenar" Elevation="0">
+        <HeaderContent>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Especie, object>(x=>x.Nome)">Nome</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Especie, object>(x=>x.Fav)">Fav</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Date">@context.Nome</MudTd>
+            <MudTd DataLabel="Date">@context.FavSt</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new[]{50, 100}" />
+        </PagerContent>
+    </MudTable>
+}

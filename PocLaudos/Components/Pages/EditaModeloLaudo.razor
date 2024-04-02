@@ -1,0 +1,131 @@
+﻿@page "/modeloLaudo"
+<MudForm Model="@Model">
+    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" OverrideStyles="false">
+        <MudButton Color="Color.Primary" Variant="Variant.Outlined" OnClick="AbreDialogoTexto">Campo Texto</MudButton>
+        <MudButton Color="Color.Warning" Variant="Variant.Outlined" OnClick="AbreDialogoLista">Campo Lista</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Outlined" OnClick="AbreDialogoDecimal">Campo Decimal</MudButton>
+        <MudButton Color="Color.Tertiary" Variant="Variant.Outlined" OnClick="AbreDialogoData">Campo Data</MudButton>
+    </MudButtonGroup>
+    <MudGrid>
+        <MudItem xs="6">
+            <MudTextField @bind-Value="Model.Nome" Label="Nome" Variant="Variant.Text" />
+        </MudItem>
+        <MudItem xs="6">
+            <MudSelect T="Especie" Dense="true" Label="Espécie do Modelo" @bind-Value="Especie">
+                @foreach (var especie in Especies)
+                {
+                    <MudSelectItem Value=@especie>@especie.Nome </MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="8">
+            @foreach (var campoTexto in Model.CampoTextos)
+            {
+                <MudGrid>
+                    <MudItem xs="8">
+                        <MudText Typo="Typo.h5">@campoTexto.Titulo</MudText>
+                    </MudItem>
+                    <MudItem xs="4">
+                        <MudButtonGroup OverrideStyles="false">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => AbreDialogoTexto(campoTexto)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Warning" OnClick="() => ApagaCampoTexto(campoTexto)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.ArrowUpward" Color="Color.Info" OnClick="() => UpCampoTexto(campoTexto)" />
+                            <MudIconButton Icon="@Icons.Material.Filled.ArrowDownward" Color="Color.Info" OnClick="() => DownCampoTexto(campoTexto)" />
+                        </MudButtonGroup>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.body1">@campoTexto.Texto</MudText>
+                    </MudItem>
+                </MudGrid>
+            }
+        </MudItem>
+        <MudItem xs="4">
+            <MudStack>
+                @if (mostraFav)
+                {
+                    <MudGrid>
+                        <MudItem xs="10">
+                            <MudNumericField @bind-Value="Fav" Label="Fav" Variant="Variant.Text" />
+                        </MudItem>
+                        <MudItem xs="2">
+                            <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(CpFav())" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid>
+                        <MudItem xs="10">
+                            <MudTextField @bind-Value="InvolucroInicial" Label="Invólucro Inicial" Variant="Variant.Text" />
+                        </MudItem>
+                        <MudItem xs="2">
+                            <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(CpInvolucroInicial())" />
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudGrid>
+                        <MudItem xs="10">
+                            <MudTextField @bind-Value="InvolucroFinal" Label="Invólucro Final" Variant="Variant.Text" />
+                        </MudItem>
+                        <MudItem xs="2">
+                            <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(CpInvolucroFinal())" />
+                        </MudItem>
+                    </MudGrid>
+                }
+                @foreach (var campo in Model.CampoDecimal)
+                {
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudField Label="@campo.ClassificadorCampo!.Nome" Variant="Variant.Text">
+                                @campo.Desc
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButtonGroup OverrideStyles="false">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => AbreDialogoDecimal(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Warning" OnClick="() => ApagaCampoDecimal(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(campo)" />
+                            </MudButtonGroup>
+                        </MudItem>
+                    </MudGrid>
+                }
+                @foreach (var campo in Model.CampoData)
+                {
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudField Label=@campo.ClassificadorCampo!.Nome Variant="Variant.Text">
+                                @campo.Desc
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButtonGroup OverrideStyles="false">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => AbreDialogoData(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Warning" OnClick="() => ApagaCampoData(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(campo)" />
+                            </MudButtonGroup>
+                        </MudItem>
+                    </MudGrid>
+                }
+                @foreach (var campo in Model.CampoLista)
+                {
+                    <MudGrid>
+                        <MudItem xs="6">
+                            <MudField Label="@campo.ClassificadorCampo!.Nome" Variant="Variant.Text">
+                                @campo.Desc
+                            </MudField>
+                        </MudItem>
+                        <MudItem xs="6">
+                            <MudButtonGroup OverrideStyles="false">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="() => AbreDialogoLista(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.DeleteForever" Color="Color.Warning" OnClick="() => ApagaCampoLista(campo)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" Color="Color.Primary" OnClick="()=>CopyToClipboard(campo)" />
+                            </MudButtonGroup>
+                        </MudItem>
+                    </MudGrid>
+                }
+            </MudStack>
+        </MudItem>
+    </MudGrid>
+
+    <MudPaper Class="pa-4 mt-4">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await Submit())">Salvar</MudButton>
+    </MudPaper>
+</MudForm>

@@ -1,0 +1,37 @@
+﻿@using MudBlazor
+@using PocLaudos.Components.MiniComponente
+<MudDialog>
+    <DialogContent>
+        <PocLaudos.Components.MiniComponente.CampoListaComponente Campo="Campo" ClassificadoresCampo="ClassificadoresCampo"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit">Salvar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [Inject] private INotifica Notifica { get; set; } = null!;
+    [Parameter] public CampoLista Campo { get; set; } = null!;
+    [Parameter] public List<ClassificadorCampo> ClassificadoresCampo { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+
+    void Submit()
+    {
+        var v = new CampoListaValidator();
+        var r = v.Validate(Campo);
+        if (!r.IsValid)
+        {
+            Notifica.Alerta(r.Errors);
+            return;
+        }
+        MudDialog.Close(DialogResult.Ok(Campo));
+    }
+
+    void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

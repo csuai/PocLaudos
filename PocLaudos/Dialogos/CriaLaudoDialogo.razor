@@ -1,0 +1,69 @@
+﻿@using MudBlazor
+@page "/crialaudo"
+
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="d-flex align-center pa-2 mx-2 my-2">
+            <MudGrid>
+                <MudItem xs="8">
+                    @foreach (var campoTexto in Modelo.CampoTextos)
+                    {
+                        <MudText Typo="Typo.h5">@campoTexto.Titulo</MudText>
+
+                        <MudTextField @bind-Value="@campoTexto.Texto" Label="Nome" Variant="Variant.Text" Lines="5" AutoGrow=true />
+                    }
+                </MudItem>
+                <MudItem xs="4">
+                    <MudStack>
+                        @if (Modelo.Especie!.Fav)
+                        {
+                            <MudNumericField @bind-Value="Modelo.Fav" Label="Fav" Variant="Variant.Text" />
+                            <MudTextField @bind-Value="Modelo.InvolucroInicial" Label="Invólucro Inicial" Variant="Variant.Text" />
+                            <MudTextField @bind-Value="Modelo.InvolucroFinal" Label="Invólucro Final" Variant="Variant.Text" />
+                        }
+                        @foreach (var c in Modelo.CampoDecimal)
+                        {
+                            <MudNumericField @bind-Value=c.Valor Label="@c.Desc" />
+                        }
+                        @foreach (var c in Modelo.CampoData)
+                        {
+                            <MudDatePicker @bind-Value=c.Valor Label="@c.Desc" />
+                        }
+                        @foreach (var c in Modelo.CampoLista)
+                        {
+                           @*  <MudSelect T="Guid" @bind-Value=c.Valor Label="@c.Desc" AnchorOrigin="Origin.BottomCenter">
+                                @foreach (var item in c.Itens)
+                                {
+                                    <MudSelectItem T="int" Value="@item.Id">@item.Nome</MudSelectItem>
+                                }
+                            </MudSelect> *@
+                        }
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Warning" OnClick="Cancel">Cancelar</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="DownloadDocx">Docx</MudButton>
+        <MudButton Color="Color.Secondary" Variant="Variant.Filled" OnClick="Emitir">Emitir Laudo</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [Parameter] public ModeloLaudo Modelo { get; set; } = null!;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    void DownloadDocx()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+
+    void Emitir()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+    void Cancel()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}
