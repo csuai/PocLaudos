@@ -14,7 +14,8 @@ public partial class FazLaudoPg
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Lista = await Db.ModeloLaudo.Include(d => d.Especie)
+        Lista = await Db.ModeloLaudo
+            .Include(d => d.Especie)
             .Include(d => d.CampoTextos)
             .Include(d => d.CampoDecimal).ThenInclude(d => d.ClassificadorCampo)
             .Include(d => d.CampoData).ThenInclude(d => d.ClassificadorCampo)
@@ -28,7 +29,7 @@ public partial class FazLaudoPg
     {
         ModeloSelecionado = null;
     }
-    private async Task Adicionar(CampoLista c)
+    private void Adicionar(CampoLista c)
     {
         if (c.Valor == Guid.Empty)
         {
@@ -64,13 +65,14 @@ public partial class FazLaudoPg
                     foreach (var itemLista in campo.Selecionados)
                     {
                         await Db.ValorLista.AddAsync(new ValorLista()
-                        { ClassificadorCampoId = campo.ClassificadorCampoId, LaudoPericialId = l.Id, ItemListaId = itemLista.Id });
+                        { ClassificadorCampoId = campo.ClassificadorCampoId, LaudoPericialId = l.Id, Valor = itemLista.Nome });
                     }
                 }
                 else
                 {
+                    var n = campo.Itens.Single(d => d.Id == campo.Valor);
                     await Db.ValorLista.AddAsync(new ValorLista()
-                    { ClassificadorCampoId = campo.ClassificadorCampoId, LaudoPericialId = l.Id, ItemListaId = campo.Valor });
+                    { ClassificadorCampoId = campo.ClassificadorCampoId, LaudoPericialId = l.Id, Valor = n.Nome});
                 }
             }
 
@@ -90,6 +92,7 @@ public partial class FazLaudoPg
                 {
                     campoTexto.SubstituiTextoIdentificador(campo);
                 }
+                campoTexto.SubstituiFavInvolucros(InvolucroInicial, InvolucroFinal, Fav);
             }
 
             await AbreDialogo(ModeloSelecionado.CampoTextos);

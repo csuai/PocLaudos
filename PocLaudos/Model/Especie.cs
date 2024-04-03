@@ -7,6 +7,8 @@ public class Especie : Base
     public bool Fav { get; set; }
     public string FavSt => Fav ? "Sim" : "Não";
 
+
+
     public static Guid ConstatacaoId = new Guid("2249f144-4cdc-4232-8898-d6928d6ef537");
     public static Guid DefinitivoId = new Guid("6da0f0a5-36de-4b36-a6dc-6cbfabaa7ad1");
     public static Guid EficienciaArmaId = new Guid("93eb6514-3683-4dbb-8f18-f8ee7f6e900a");

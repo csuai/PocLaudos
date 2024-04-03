@@ -1,11 +1,7 @@
 ﻿namespace PocLaudos.Model;
 
-public class ValorDecimal:BaseSemNome
+public class ValorDecimal: ValorCampoLaudo
 {
-    public Guid LaudoPericialId { get; set; }
-    public LaudoPericial? LaudoPericial { get; set; }
-    public Guid ClassificadorCampoId { get; set; }
-    public ClassificadorCampo? ClassificadorCampo { get; set; }
     public double? Valor { get; set; }
 }
 public class ValorDecimalValidator: AbstractValidator<ValorDecimal>

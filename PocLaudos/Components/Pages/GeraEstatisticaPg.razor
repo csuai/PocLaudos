@@ -1,6 +1,20 @@
-﻿@page "/GeraEstatisticaPg"
-<h3>GeraEstatisticaPg</h3>
+﻿@page "/GeraEstatistica"
 
-@code {
-    
-}
+<MudForm>
+    <MudGrid>
+        <MudItem xs="4">
+            <MudSelect T="Especie" Label="Espécie" AnchorOrigin="Origin.BottomCenter" @bind-Value="Especie">
+                @foreach (var item in Especies)
+                {
+                    <MudSelectItem Value="@item" />
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="4">
+            <MudDateRangePicker @bind-DateRange="@DateRange" Margin="Margin.Dense" Editable="true" PlaceholderStart="Início" PlaceholderEnd="Fim"/>
+        </MudItem>
+        <MudItem xs="4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="GeraEstatistica">Gerar</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudForm>

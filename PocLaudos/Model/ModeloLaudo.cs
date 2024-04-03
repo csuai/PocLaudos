@@ -16,6 +16,7 @@ public class ModeloLaudo:Base
     [NotMapped] public int Fav { get; set; }
     [NotMapped] public string InvolucroInicial { get; set; } = "";
     [NotMapped] public string InvolucroFinal { get; set; } = "";
+
 }
 public class ModeloLaudoValidator : AbstractValidator<ModeloLaudo>
 {

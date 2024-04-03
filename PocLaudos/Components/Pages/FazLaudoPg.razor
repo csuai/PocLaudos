@@ -3,7 +3,7 @@
 
 @if (Carregando)
 {
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+    <MudProgressCircular Color="Color.Default" Indeterminate="true"/>
 }
 else
 {
@@ -14,43 +14,44 @@ else
                 <MudGrid>
                     @foreach (var c in ModeloSelecionado.CampoTextos)
                     {
-                        @if (ModeloSelecionado.Especie is { Fav: true })
-                        {
-                            <MudItem xs="12">
-                                <MudNumericField @bind-Value="Fav" Label="Fav" Variant="Variant.Text" />
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudTextField @bind-Value="InvolucroInicial" Label="Invólucro Inicial" Variant="Variant.Text" />
-                            </MudItem>
-                            <MudItem xs="12">
-                                <MudTextField @bind-Value="InvolucroFinal" Label="Invólucro Inicial" Variant="Variant.Text" />
-                            </MudItem>
-                        }
                         @if (c.Titulo.Trim().Length > 0)
                         {
                             <MudItem xs="12">
                                 <MudText Typo="Typo.h6">@c.Titulo</MudText>
                             </MudItem>
                         }
+
                         <MudItem xs="12">
-                            <MudTextField T="string" Label="Multiline" Variant="Variant.Text" 
-                                          @bind-Text=c.Texto Lines="5" />
+                            <MudTextField T="string" Label="Multiline" Variant="Variant.Text"
+                                          @bind-Text=c.Texto Lines="5"/>
                         </MudItem>
                     }
                 </MudGrid>
             </MudItem>
             <MudItem xs="4">
                 <MudGrid>
+                    @if (ModeloSelecionado.Especie is { Fav: true })
+                    {
+                        <MudItem xs="12">
+                            <MudNumericField @bind-Value="Fav" Label="Fav" Variant="Variant.Text"/>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="InvolucroInicial" Label="Invólucro Inicial" Variant="Variant.Text"/>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="InvolucroFinal" Label="Invólucro Inicial" Variant="Variant.Text"/>
+                        </MudItem>
+                    }
                     @foreach (var c in ModeloSelecionado.CampoData)
                     {
                         <MudItem xs="12">
-                            <MudDatePicker Label="@c.ClassificadorCampo!.Nome" @bind-Date="@c.Valor" />
+                            <MudDatePicker Label="@c.ClassificadorCampo!.Nome" @bind-Date="@c.Valor"/>
                         </MudItem>
                     }
                     @foreach (var c in ModeloSelecionado.CampoDecimal)
                     {
                         <MudItem xs="12">
-                            <MudNumericField Label="@c.ClassificadorCampo!.Nome" @bind-Value="@c.Valor" />
+                            <MudNumericField Label="@c.ClassificadorCampo!.Nome" @bind-Value="@c.Valor"/>
                         </MudItem>
                     }
                     @foreach (var c in ModeloSelecionado.CampoLista)
@@ -66,13 +67,15 @@ else
                                 </MudSelect>
                             </MudItem>
                             <MudItem xs="4">
-                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size=@Size.Small Color="Color.Primary" OnClick="() => Adicionar(c)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size=@Size.Small Color="Color.Primary" OnClick="() => Adicionar(c)"/>
                             </MudItem>
                             @foreach (var item in c.Selecionados)
                             {
                                 <MudItem xs="4">
-                                    <MudButton Variant="Variant.Text" Color="Color.Primary" 
-                                    EndIcon="@Icons.Material.Filled.DeleteOutline" OnClick="()=>Apagar(item, c)">@item.Nome</MudButton>
+                                    <MudButton Variant="Variant.Text" Color="Color.Primary"
+                                               EndIcon="@Icons.Material.Filled.DeleteOutline" OnClick="() => Apagar(item, c)">
+                                        @item.Nome
+                                    </MudButton>
                                 </MudItem>
                             }
                         }
@@ -103,8 +106,12 @@ else
         <MudText Typo="Typo.h6">Modelos Cadastrados</MudText>
         <MudTable Items="Lista" Hover="true" SortLabel="Ordenar" Elevation="0" @bind-SelectedItem="ModeloSelecionado">
             <HeaderContent>
-                <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ModeloLaudo, object>(x=>x.Nome)">Nome</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ModeloLaudo, object>(x=>x.Especie!.Nome)">Espécie</MudTableSortLabel></MudTh>
+                <MudTh>
+                    <MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ModeloLaudo, object>(x => x.Nome)">Nome</MudTableSortLabel>
+                </MudTh>
+                <MudTh>
+                    <MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<ModeloLaudo, object>(x => x.Especie!.Nome)">Espécie</MudTableSortLabel>
+                </MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Modelo">@context!.Nome</MudTd>

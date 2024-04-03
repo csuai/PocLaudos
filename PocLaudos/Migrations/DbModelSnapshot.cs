@@ -181,6 +181,10 @@ namespace PocLaudos.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("Emissao")
+                        .HasPrecision(0)
+                        .HasColumnType("timestamp(0) with time zone");
+
                     b.Property<Guid>("ModeloLaudoId")
                         .HasColumnType("uuid");
 
@@ -289,17 +293,17 @@ namespace PocLaudos.Migrations
                     b.Property<Guid>("ClassificadorCampoId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ItemListaId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("LaudoPericialId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Valor")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ClassificadorCampoId");
-
-                    b.HasIndex("ItemListaId");
 
                     b.HasIndex("LaudoPericialId");
 
@@ -427,7 +431,7 @@ namespace PocLaudos.Migrations
                         .IsRequired();
 
                     b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
-                        .WithMany()
+                        .WithMany("ValorData")
                         .HasForeignKey("LaudoPericialId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -446,7 +450,7 @@ namespace PocLaudos.Migrations
                         .IsRequired();
 
                     b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
-                        .WithMany()
+                        .WithMany("ValorDecimal")
                         .HasForeignKey("LaudoPericialId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -464,21 +468,13 @@ namespace PocLaudos.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("PocLaudos.Model.ItemLista", "ItemLista")
-                        .WithMany()
-                        .HasForeignKey("ItemListaId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
-                        .WithMany()
+                        .WithMany("ValorLista")
                         .HasForeignKey("LaudoPericialId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClassificadorCampo");
-
-                    b.Navigation("ItemLista");
 
                     b.Navigation("LaudoPericial");
                 });
@@ -486,6 +482,15 @@ namespace PocLaudos.Migrations
             modelBuilder.Entity("PocLaudos.Model.CampoLista", b =>
                 {
                     b.Navigation("Itens");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.LaudoPericial", b =>
+                {
+                    b.Navigation("ValorData");
+
+                    b.Navigation("ValorDecimal");
+
+                    b.Navigation("ValorLista");
                 });
 
             modelBuilder.Entity("PocLaudos.Model.ModeloLaudo", b =>

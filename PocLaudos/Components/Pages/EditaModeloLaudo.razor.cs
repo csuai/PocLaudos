@@ -291,7 +291,6 @@ public partial class EditaModeloLaudo
     }
     async Task CopyToClipboard(Campo campo)
     {
-        // Writing to the clipboard may be denied, so you must handle the exception
         try
         {
             await ClipboardService.WriteTextAsync($"<%{campo.Identificador}%>");

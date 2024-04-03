@@ -5,6 +5,10 @@ namespace PocLaudos.Model;
 public class Base:BaseSemNome
 {
     public string Nome { get; set; } = "";
+    public override string ToString()
+    {
+        return Nome;
+    }
 }
 public class BaseSemNome
 {

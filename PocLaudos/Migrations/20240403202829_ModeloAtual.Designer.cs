@@ -12,7 +12,7 @@ using PocLaudos;
 namespace PocLaudos.Migrations
 {
     [DbContext(typeof(Db))]
-    [Migration("20240331100147_ModeloAtual")]
+    [Migration("20240403202829_ModeloAtual")]
     partial class ModeloAtual
     {
         /// <inheritdoc />
@@ -178,6 +178,29 @@ namespace PocLaudos.Migrations
                     b.ToTable("ItemLista");
                 });
 
+            modelBuilder.Entity("PocLaudos.Model.LaudoPericial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Emissao")
+                        .HasPrecision(0)
+                        .HasColumnType("timestamp(0) with time zone");
+
+                    b.Property<Guid>("ModeloLaudoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModeloLaudoId");
+
+                    b.ToTable("LaudoPericial");
+                });
+
             modelBuilder.Entity("PocLaudos.Model.ModeloLaudo", b =>
                 {
                     b.Property<Guid>("Id")
@@ -213,6 +236,81 @@ namespace PocLaudos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TipoClassificadorCampo");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.ValorData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClassificadorCampoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LaudoPericialId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("Valor")
+                        .HasPrecision(0)
+                        .HasColumnType("timestamp(0) with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassificadorCampoId");
+
+                    b.HasIndex("LaudoPericialId");
+
+                    b.ToTable("ValorData");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.ValorDecimal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClassificadorCampoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LaudoPericialId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Valor")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassificadorCampoId");
+
+                    b.HasIndex("LaudoPericialId");
+
+                    b.ToTable("ValorDecimal");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.ValorLista", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClassificadorCampoId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LaudoPericialId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Valor")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassificadorCampoId");
+
+                    b.HasIndex("LaudoPericialId");
+
+                    b.ToTable("ValorLista");
                 });
 
             modelBuilder.Entity("PocLaudos.Model.CampoData", b =>
@@ -305,6 +403,17 @@ namespace PocLaudos.Migrations
                     b.Navigation("CampoLista");
                 });
 
+            modelBuilder.Entity("PocLaudos.Model.LaudoPericial", b =>
+                {
+                    b.HasOne("PocLaudos.Model.ModeloLaudo", "ModeloLaudo")
+                        .WithMany()
+                        .HasForeignKey("ModeloLaudoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ModeloLaudo");
+                });
+
             modelBuilder.Entity("PocLaudos.Model.ModeloLaudo", b =>
                 {
                     b.HasOne("PocLaudos.Model.Especie", "Especie")
@@ -316,9 +425,75 @@ namespace PocLaudos.Migrations
                     b.Navigation("Especie");
                 });
 
+            modelBuilder.Entity("PocLaudos.Model.ValorData", b =>
+                {
+                    b.HasOne("PocLaudos.Model.ClassificadorCampo", "ClassificadorCampo")
+                        .WithMany()
+                        .HasForeignKey("ClassificadorCampoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
+                        .WithMany("ValorData")
+                        .HasForeignKey("LaudoPericialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassificadorCampo");
+
+                    b.Navigation("LaudoPericial");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.ValorDecimal", b =>
+                {
+                    b.HasOne("PocLaudos.Model.ClassificadorCampo", "ClassificadorCampo")
+                        .WithMany()
+                        .HasForeignKey("ClassificadorCampoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
+                        .WithMany("ValorDecimal")
+                        .HasForeignKey("LaudoPericialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassificadorCampo");
+
+                    b.Navigation("LaudoPericial");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.ValorLista", b =>
+                {
+                    b.HasOne("PocLaudos.Model.ClassificadorCampo", "ClassificadorCampo")
+                        .WithMany()
+                        .HasForeignKey("ClassificadorCampoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PocLaudos.Model.LaudoPericial", "LaudoPericial")
+                        .WithMany("ValorLista")
+                        .HasForeignKey("LaudoPericialId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ClassificadorCampo");
+
+                    b.Navigation("LaudoPericial");
+                });
+
             modelBuilder.Entity("PocLaudos.Model.CampoLista", b =>
                 {
                     b.Navigation("Itens");
+                });
+
+            modelBuilder.Entity("PocLaudos.Model.LaudoPericial", b =>
+                {
+                    b.Navigation("ValorData");
+
+                    b.Navigation("ValorDecimal");
+
+                    b.Navigation("ValorLista");
                 });
 
             modelBuilder.Entity("PocLaudos.Model.ModeloLaudo", b =>

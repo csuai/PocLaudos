@@ -5,6 +5,12 @@ public class CampoTexto: CampoBase
     public string Titulo { get; set; } = "";
     public string Texto { get; set; } = "";
 
+    public void SubstituiFavInvolucros(string involucroInicial, string involucroFinal, int fav)
+    {
+        Texto = Texto.Replace($"<%fav%>", fav.ToString())
+            .Replace($"<%InvolucroInicial%>", involucroInicial)
+            .Replace($"<%InvolucroFinal%>", involucroFinal);
+    }
     public void SubstituiTextoIdentificador(CampoDecimal campo)
     {
         var id = $"<%{campo.Id}%>";

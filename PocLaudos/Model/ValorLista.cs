@@ -1,13 +1,8 @@
 ﻿namespace PocLaudos.Model;
 
-public class ValorLista : BaseSemNome
+public class ValorLista : ValorCampoLaudo
 {
-    public Guid LaudoPericialId { get; set; }
-    public LaudoPericial? LaudoPericial { get; set; }
-    public Guid ClassificadorCampoId { get; set; }
-    public ClassificadorCampo? ClassificadorCampo { get; set; }
-    public Guid ItemListaId { get; set; }
-    public ItemLista? ItemLista { get; set; }
+    public string Valor { get; set; } = "";
 }
 public class ValorListaValidator : AbstractValidator<ValorLista>
 {
@@ -15,6 +10,6 @@ public class ValorListaValidator : AbstractValidator<ValorLista>
     {
         RuleFor(x => x.LaudoPericialId).NotEmpty().WithMessage("LaudoPericialId inválido");
         RuleFor(x => x.ClassificadorCampoId).NotEmpty().WithMessage("ClassificadorCampoId inválido");
-        RuleFor(x => x.ItemListaId).NotEmpty().WithMessage("ItemListaId inválido");
+        RuleFor(x => x.Valor).NotEmpty().WithMessage("Valor inválido");
     }
 }

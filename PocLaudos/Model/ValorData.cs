@@ -1,11 +1,7 @@
 ﻿namespace PocLaudos.Model;
 
-public class ValorData : BaseSemNome
+public class ValorData : ValorCampoLaudo
 {
-    public Guid LaudoPericialId { get; set; }
-    public LaudoPericial? LaudoPericial { get; set; }
-    public Guid ClassificadorCampoId { get; set; }
-    public ClassificadorCampo? ClassificadorCampo { get; set; }
     public DateTime? Valor { get; set; }
 }
 public class ValorDataValidator : AbstractValidator<ValorData>
