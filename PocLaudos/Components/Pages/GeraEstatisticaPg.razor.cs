@@ -8,19 +8,16 @@ public partial class GeraEstatisticaPg
 {
     private DateRange DateRange { get; set; }=new DateRange(DateTime.UtcNow.AddYears(-2), DateTime.UtcNow);
     public List<Especie> Especies { get; set; } = new();
-    public List<ClassificadorCampo> ClassificadoresCampo { get; set; } = new();
     [Inject] public Db Db { get; set; } = null!;
     [Inject] public INotifica Notifica { get; set; } = null!;
     [Inject] private IJSRuntime Js { get; set; } = null!;
+    [Inject] private IWebHostEnvironment WebHostEnvironment { get; set; }=null!;
     public Especie? Especie { get; set; }
-    public ClassificadorCampo? ClassificadorCampo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         Especies = await Db.Especie.AsNoTrackingWithIdentityResolution().ToListAsync();
-        ClassificadoresCampo = await Db.ClassificadorCampo.Include(d => d.TipoClassificadorCampo)
-            .AsNoTrackingWithIdentityResolution().ToListAsync();
     }
 
     async Task GeraEstatistica()
@@ -50,7 +47,8 @@ public partial class GeraEstatisticaPg
             .Where(d => d.ModeloLaudo!.EspecieId == Especie.Id && d.Emissao<=fim && d.Emissao>=inicio).AsNoTrackingWithIdentityResolution().ToListAsync();
 
         ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
-        var file = new FileInfo($"planilha.xlsx");
+        var endereco = Path.Combine(WebHostEnvironment.WebRootPath, "planilha.xlsx");
+        var file = new FileInfo(endereco);
         if (file.Exists)
         {
             file.Delete();
@@ -130,11 +128,11 @@ public partial class GeraEstatisticaPg
             }
 
         }
-        await package.SaveAsync();
+        //await package.SaveAsync();
 
-        var path = Path.GetFullPath(file.Name);
+        var bb = await package.GetAsByteArrayAsync();
 
         var fileName = "Estatisticas.xlsx";
-        await Js.InvokeVoidAsync("triggerFileDownload", fileName, path);
+        await Js.InvokeVoidAsync("BlazorDownloadFile", fileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", bb);
     }
 }

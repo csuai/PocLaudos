@@ -1,6 +1,4 @@
-﻿using PocLaudos.Model;
-
-namespace PocLaudos;
+﻿namespace PocLaudos;
 
 public class ImportaDb(Db db)
 {
