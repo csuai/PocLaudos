@@ -17,7 +17,7 @@ public partial class GeraEstatisticaPg
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        Especies = await Db.Especie.AsNoTrackingWithIdentityResolution().ToListAsync();
+        //Especies = await Db.Especie.AsNoTrackingWithIdentityResolution().ToListAsync();
     }
 
     async Task GeraEstatistica()
