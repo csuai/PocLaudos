@@ -7,12 +7,14 @@ public class Db(DbContextOptions<Db> options) : DbContext(options)
     public DbSet<ClassificadorCampo> ClassificadorCampo { get; init; } = null!;
     public DbSet<CampoTexto> Texto { get; init; } = null!;
     public DbSet<CampoLista> Lista { get; init; } = null!;
+    public DbSet<CampoListaDetalhada> CampoListaDetalhada { get; init; } = null!;
     public DbSet<CampoDecimal> CampoDecimal { get; init; } = null!;
     public DbSet<CampoData> Data { get; init; } = null!;
     public DbSet<ModeloLaudo> ModeloLaudo { get; init; } = null!;
     public DbSet<Especie> Especie { get; init; } = null!;
     public DbSet<LaudoPericial> LaudoPericial { get; init; } = null!;
     public DbSet<ValorLista> ValorLista { get; init; } = null!;
+    public DbSet<ValorListaDetalhada> ValorListaDetalhada { get; init; } = null!;
     public DbSet<ValorDecimal> ValorDecimal { get; init; } = null!;
     public DbSet<ValorData> ValorData { get; init; } = null!;
 
