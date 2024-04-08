@@ -13,6 +13,7 @@ public class LaudoPericial:BaseSemNome
     {
         var rnd = new Random();
         Numero = rnd.Next(100000000, 999999999);
-        Emissao = Emissao.AddDays(rnd.Next(-365 * 2, 0));
+        var minutos = rnd.Next(-1051200, 0);
+        Emissao = Emissao.AddMinutes(minutos);
     }
 }

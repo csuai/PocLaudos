@@ -72,7 +72,11 @@ public partial class GeraEstatisticaPg
                 var nunDec = dec.Count;
                 var numVal = val.Count;
                 var numDat = dat.Count;
-                int pontoPartida = 1;
+                int pontoPartida = 3;
+
+                ws.Cells[1, 1].Value = "Laudo";
+                ws.Cells[1, 2].Value = "Emissão";
+
                 for (int i = 0; i < nunDec; i++)
                 {
                     var c = dec[i];
@@ -101,7 +105,11 @@ public partial class GeraEstatisticaPg
                     var nunDecdatAtual = decAtual.Count;
                     var numValdatAtual = valAtual.Count;
                     var numDatdatAtual = datAtual.Count;
-                    int pontoPartidaAtual = 1;
+                    int pontoPartidaAtual = 3;
+
+                    ws.Cells[2 + lps, 1].Value = atual.Numero;
+                    ws.Cells[2 + lps, 2].Value = atual.Emissao.ToString("dd/MM/yyyy HH:mm:ss");
+
                     for (int i = 0; i < nunDecdatAtual; i++)
                     {
                         var c = decAtual[i];
